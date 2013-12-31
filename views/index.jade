@@ -3,3 +3,15 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  script.
+    var socket = io.connect('http://localhost');
+    socket.on('pi', function (data) {
+      console.log(data);
+      // socket.emit('my other event', { from: 'frontend' });
+    });
+  span booksefalksjdf
+    ul#books
+      li
+        a(href="#book-a") Book A
+      li
+        a(href="#book-b") Book B

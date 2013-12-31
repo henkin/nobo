@@ -1,13 +1,11 @@
-
-###
-Module dependencies.
-###
 express = require("express")
 routes = require("./routes")
 user = require("./routes/user")
 pi = require("./routes/pi")
 http = require("http")
 path = require("path")
+socketio = require("socket.io")
+
 app = express()
 
 # all environments
@@ -25,12 +23,23 @@ app.use express.static(path.join(__dirname, "public"))
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
 
+server = http.createServer(app)
+io = socketio.listen(server)
+
+io.sockets.on 'connection', (socket) ->
+  socket.emit 'news', { from: 'mainApp' }
+  #socket.on 'my other event', (data) -> 
+  #  console.log(data);
+
 #routes
+Pi = new pi(io)
+
 app.get "/", routes.index
 app.get "/users", user.list
-app.get "/pi/index", pi.index
-app.get "/pi/debug", pi.debug
+app.get "/pi/index", Pi.index
+app.get "/pi", Pi.index
+app.get "/pi/debug", Pi.debug
 
-http.createServer(app).listen app.get("port"), ->
+server.listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")
 
