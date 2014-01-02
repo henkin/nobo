@@ -5,13 +5,27 @@ block content
   p Welcome to #{title}
   script.
     var socket = io.connect('http://localhost');
-    socket.on('pi', function (data) {
+    socket.on('distance', function (data) {
       console.log(data);
-      // socket.emit('my other event', { from: 'frontend' });
+      $("#distance").prepend($("<li/>").html(data));
     });
-  span booksefalksjdf
-    ul#books
-      li
-        a(href="#book-a") Book A
-      li
-        a(href="#book-b") Book B
+
+    socket.on('angle_set', function (data) {
+      console.log(data);
+      $("#status").html("angle set to " + data);
+    });
+
+    $(document).ready(function(){
+         $( "#set_angle" ).on( "submit", function( event ) {
+            event.preventDefault();
+            $.post(this.action, $( this ).serialize() );
+          });
+       });
+  
+  form#set_angle(method="post", action="/pi/set_angle")
+    input#angle_text(type="text", name="angle")
+    input(type="submit", value="set")
+    span#status
+
+
+  ul#distance

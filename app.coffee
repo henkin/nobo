@@ -17,6 +17,7 @@ app.use express.logger("dev")
 app.use express.json()
 app.use express.urlencoded()
 app.use express.methodOverride()
+app.use express.bodyParser()
 app.use app.router
 app.use express.static(path.join(__dirname, "public"))
 
@@ -26,10 +27,6 @@ app.use express.errorHandler()  if "development" is app.get("env")
 server = http.createServer(app)
 io = socketio.listen(server)
 
-io.sockets.on 'connection', (socket) ->
-  socket.emit 'news', { from: 'mainApp' }
-  #socket.on 'my other event', (data) -> 
-  #  console.log(data);
 
 #routes
 Pi = new pi(io)
@@ -39,6 +36,7 @@ app.get "/users", user.list
 app.get "/pi/index", Pi.index
 app.get "/pi", Pi.index
 app.get "/pi/debug", Pi.debug
+app.post "/pi/set_angle", Pi.set_angle
 
 server.listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")
