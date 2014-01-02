@@ -17,13 +17,13 @@ class Pi
         clearInterval(@timer)
 
   index: (req, res) =>
-    range = @ranger.getDistance()
+    range = @ranger.get_distance()
 
     res.render "index",
       title: "Pi"
 
   debug: (req, res) =>
-    res.json @ranger.getDistance()
+    res.json @ranger.get_distance()
 
   set_angle: (req, res) =>
     angle = req.body.angle
@@ -31,6 +31,6 @@ class Pi
     @io.sockets.emit 'angle_set', angle
 
   emit_distance: (socket) =>
-    socket.emit 'distance', @ranger.getDistance()
+    socket.emit 'distance', @ranger.get_distance()
 
 module.exports = Pi
