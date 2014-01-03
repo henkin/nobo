@@ -4,7 +4,7 @@ block content
   h1= title
   p Welcome to #{title}
   script.
-    var socket = io.connect('http://pi:3000');
+    var socket = io.connect('http://henkin.us:3000');
     socket.on('distance', function (data) {
       console.log(data);
       $("#distance").prepend($("<li/>").html(data));
