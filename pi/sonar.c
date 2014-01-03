@@ -6,9 +6,25 @@
 #include <errno.h>  
 #include <sys/time.h>  
 #include <wiringPi.h>  
-#define TRIGGER_PIN 23  
-#define ECHO_PIN  24  
 #define TIMEOUT 999 /* any value other than LOW or HIGH */  
+
+int TRIGGER_PIN;// 23  
+int ECHO_PIN;//  24  
+
+void init(int triggerPin, int echoPin)
+{
+	TRIGGER_PIN = triggerPin;
+	ECHO_PIN = echoPin;
+
+	if (wiringPiSetupGpio() == -1)
+	{
+		fprintf(stderr, "Can't initialise wiringPi: %s\n", strerror(errno));
+		return;
+	}
+	pinMode(TRIGGER_PIN, OUTPUT);
+	pinMode(ECHO_PIN, INPUT);
+	//printf("initted\n");
+}
 
 int waitforpin(int pin, int level, int timeout)
 {
@@ -29,20 +45,22 @@ int waitforpin(int pin, int level, int timeout)
 	return micros;
 }
 
-float getDistance(int triggerPin, int echoPin)
+float get_distance()
+//float getDistance(int triggerPin, int echoPin)
 {
 	int pulsewidth;
 
 	/* trigger reading */
-	digitalWrite(triggerPin, HIGH);
-	waitforpin(echoPin, TIMEOUT, 10); /* wait 10 microseconds */
-	digitalWrite(triggerPin, LOW);
+	digitalWrite(TRIGGER_PIN, HIGH);
+	waitforpin(ECHO_PIN, TIMEOUT, 10); /* wait 10 microseconds */
+	digitalWrite(TRIGGER_PIN, LOW);
+
 	/* wait for reading to start */
-	waitforpin(echoPin, HIGH, 5000); /* 5 ms timeout */
-	if (digitalRead(echoPin) == HIGH)
+	waitforpin(ECHO_PIN, HIGH, 5000); /* 5 ms timeout */
+	if (digitalRead(ECHO_PIN) == HIGH)
 	{
-		pulsewidth = waitforpin(echoPin, LOW, 60000L); /* 60 ms timeout */
-		if (digitalRead(echoPin) == LOW)
+		pulsewidth = waitforpin(ECHO_PIN, LOW, 60000L); /* 60 ms timeout */
+		if (digitalRead(ECHO_PIN) == LOW)
 		{
 			/* valid reading code */
 			float distance = ((float)pulsewidth / (float)29) / (float)2;
@@ -65,23 +83,15 @@ float getDistance(int triggerPin, int echoPin)
 	return 0;
 }
 
-int main(int argc, char *argv[])
-{
-
-	if (wiringPiSetupGpio() == -1)
-	{
-		fprintf(stderr, "Can't initialise wiringPi: %s\n", strerror(errno));
-		return 1;
-	}
-	pinMode(TRIGGER_PIN, OUTPUT);
-	pinMode(ECHO_PIN, INPUT);
-	int i;
-	for (i = 0; i < 10; i++)
-	{
-		float distance = getDistance(TRIGGER_PIN, ECHO_PIN);
-		printf("d: (%f)\n", distance);
-	}
-	return 0;
-}
+//int main(int argc, char *argv[])
+//{
+//	int i;
+//	for (i = 0; i < 10; i++)
+//	{
+//		float distance = getDistance(TRIGGER_PIN, ECHO_PIN);
+//		printf("d: (%f)\n", distance);
+//	}
+//	return 0;
+//}
 
 

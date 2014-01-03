@@ -1,28 +1,24 @@
 Servo = require("./servo")
-#Sonar = require("./sonar")
 ffi = require("node-ffi")
 
 class Ranger
 	constructor: () ->
-		#console.log "initialized Ranger"
+		console.log "initialized Ranger"
 		@servo = new Servo()
-		#@sonar = new Sonar()
+		@sonar = new ffi.Library(__dirname + "/libsonar.so",
+			init : [ "void", [ "int", "int" ] ] 
+			get_distance : [ "float", [] ]
+		)
+		@sonar.init(23, 24)
 
 	get_distance: () =>
-		return Math.random()
 		# @sonar.get_distance()
-
-		#RTLD_NOW = ffi.DynamicLibrary.FLAGS.RTLD_NOW
-		#RTLD_GLOBAL = ffi.DynamicLibrary.FLAGS.RTLD_GLOBAL
-		#mode = RTLD_NOW | RTLD_GLOBAL
-		#sonar = new ffi.DynamicLibrary(__dirname + "/libsonar.so", mode)
-		#wiring = new ffi.DynamicLibrary(__dirname + "/libwiringPi.so", mode)
+		return @sonar.get_distance()
 		#   #   getDistance: ["double", ["int", "int"]]
 		#
 		#f = wiring.wiringInitGpio();
 		#return sonar.getDistance();
-
-
+		#return Math.random()
 
 	set_angle: (degrees) =>
 		@servo.set_degrees(2, degrees)
