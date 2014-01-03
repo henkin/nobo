@@ -8,7 +8,7 @@ class Ranger
 	
   get_distance: () =>
     #return Math.random()
-    sonar = new ffi.Library("libsonar.so",
+    sonar = new ffi.Library(__dirname + "/libsonar",
       getDistance: ["double", ["int", "int"]]
     )
     return sonar.getDistance();
