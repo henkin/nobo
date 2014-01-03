@@ -13,6 +13,7 @@ class Ranger
     )
     return sonar.getDistance();
 
+
 	set_angle: (degrees) =>
 		@servo.set_degrees(2, degrees)
 
