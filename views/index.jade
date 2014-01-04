@@ -6,7 +6,7 @@ block content
   script.
     var socket = io.connect('http://henkin.us:3000');
     socket.on('distance', function (data) {
-      console.log(data);
+      //console.log(data);
       $("#distance").prepend($("<li/>").html(data));
     });
 
@@ -16,16 +16,31 @@ block content
     });
 
     $(document).ready(function(){
-         $( "#set_angle" ).on( "submit", function( event ) {
+        
+        $( "#set_angle" ).on( "submit", function( event ) {
             event.preventDefault();
             $.post(this.action, $( this ).serialize() );
-          });
+        });
+         
        });
+    $(function() {
+        $( "#slider" ).slider({ 
+          min: -75, 
+          max: 75
+        })
+        .on( "slidechange", function( event, ui ) { 
+          //console.log(ui.value);
+          $.post("/pi/set_angle", { angle: ui.value });
+        })
+      });
+
   
-  form#set_angle(method="post", action="/pi/set_angle")
-    input#angle_text(type="text", name="angle")
-    input(type="submit", value="set")
-    span#status
-
-
+  //form#set_angle(method="post", action="/pi/set_angle")
+  //  input#angle_text(type="text", name="angle")
+  //  input(type="submit", value="set")
+  
+  div
+    div#slider
+    div#status
+      
   ul#distance

@@ -5,17 +5,17 @@ class Servo
 		if degrees < -75 or degrees > 75
 			console.log "servo.get_usecs: invalid degrees: #{degrees}" 
 		else
-			((degrees + 90) + 60)
+			return ((degrees + 90) + 60)
 
 	center: (servo) -> @set_degrees(servo, 0)
 	
-	set_degrees: (servo, degress) ->
-		usecs = @get_usecs(degress)
+	set_degrees: (servo, degrees) ->
+		usecs = @get_usecs(degrees)
 		console.log "setting #{servo} to #{usecs}"
 
-		fs.writeFile "/dev/servoblaster", "#{servo}=#{usecs}\n", (err) ->
-		  if err
-		    console.log err
-		  #else
-		  # console.log "servo: The file was saved!"
+		stream = fs.createWriteStream("/dev/servoblaster");
+		stream.once 'open', (fd) ->
+			stream.write("#{servo}=#{usecs}\n")
+			stream.end
+
 module.exports = Servo

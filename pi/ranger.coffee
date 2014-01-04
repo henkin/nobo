@@ -13,7 +13,10 @@ class Ranger
 
 	get_distance: () =>
 		# @sonar.get_distance()
-		return @sonar.get_distance()
+		distance = 0
+		while distance <= 0
+			distance = @sonar.get_distance()
+		return distance
 		#   #   getDistance: ["double", ["int", "int"]]
 		#
 		#f = wiring.wiringInitGpio();

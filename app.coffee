@@ -36,7 +36,6 @@ app.get "/", routes.index
 app.get "/users", user.list
 app.get "/pi/index", Pi.index
 app.get "/pi", Pi.index
-app.get "/pi/debug", Pi.debug
 app.post "/pi/set_angle", Pi.set_angle
 
 server.listen app.get("port"), ->

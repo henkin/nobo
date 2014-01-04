@@ -9,7 +9,7 @@ class Pi
       #start broadcast
       @timer = setInterval => 
         @emit_distance(socket)
-      , 1000
+      , 400
 
       # stop firing when disconnected
       socket.on 'disconnect', () =>
@@ -22,15 +22,15 @@ class Pi
     res.render "index",
       title: "Pi"
 
-  debug: (req, res) =>
-    res.json @ranger.get_distance()
-
   set_angle: (req, res) =>
-    angle = req.body.angle
-    console.log "pi: set_angle #{angle}"
+    angle = Number(req.body.angle)
+    console.log "POST sent_angle: #{angle}"
+    @ranger.set_angle(angle)
     @io.sockets.emit 'angle_set', angle
+    res.end()
 
   emit_distance: (socket) =>
-    socket.emit 'distance', @ranger.get_distance()
+    distance = @ranger.get_distance()
+    socket.emit 'distance', distance
 
 module.exports = Pi
