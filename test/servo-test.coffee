@@ -10,4 +10,4 @@ describe "Servo", ->
       assert.equal undefined, servo.get_usecs(-90)
   describe "write_pulse", ->
     it "should write pulse to servoblaster", ->
-      #servo.set_degrees(2, 25)
+      servo.set_degrees(2, 25)

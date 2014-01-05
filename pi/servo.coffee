@@ -9,13 +9,16 @@ class Servo
 
 	center: (servo) -> @set_degrees(servo, 0)
 	
-	set_degrees: (servo, degrees) ->
+	set_degrees: (servo, degrees) =>
 		usecs = @get_usecs(degrees)
-		console.log "setting #{servo} to #{usecs}"
+		@set_pulse(servo, usecs)
+
+	set_pulse: (servo, usecs) =>
+		console.log "servo: #{servo}=#{usecs}"
 
 		stream = fs.createWriteStream("/dev/servoblaster");
 		stream.once 'open', (fd) ->
 			stream.write("#{servo}=#{usecs}\n")
-			stream.end
+			stream.end		
 
 module.exports = Servo

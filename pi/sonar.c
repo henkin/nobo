@@ -16,7 +16,7 @@ void init(int triggerPin, int echoPin)
 	TRIGGER_PIN = triggerPin;
 	ECHO_PIN = echoPin;
 
-	if (wiringPiSetupGpio() == -1)
+	if (wiringPiSetup() == -1)
 	{
 		fprintf(stderr, "Can't initialise wiringPi: %s\n", strerror(errno));
 		return;
