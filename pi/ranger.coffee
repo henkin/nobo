@@ -39,6 +39,6 @@ class Ranger
 
 	set_angle: (degrees) =>
 		@current_angle = degrees
-		@servo.set_degrees(2, degrees)
+		@servo.set_degrees(0, degrees)
 
 module.exports = Ranger
