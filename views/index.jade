@@ -1,14 +1,26 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  
   //form#set_angle(method="post", action="/pi/set_angle")
   //  input#angle_text(type="text", name="angle")
   //  input(type="submit", value="set")
   //video(controls='controls', width='1280', height='720', autoplay='autoplay')
-    //source(src='index.m3u8', type='application/x-mpegURL')
+  //source(src='index.m3u8', type='application/x-mpegURL')
+  h1 nobo 0.1
+  table#main
+    tr
+      td
+        button#left_go.btn.btn-success.btn-lg.motor(type='button', side='left', dir='fwd') !Go!
+        br
+        br
+        button#left_back.btn.btn-warning.btn-lg.motor(type='button', side='left', dir='back') Back
+      td
+        | [VIDEO FEED]
+      td
+        button#right_go.btn.btn-success.btn-lg.motor(type='button', side='right', dir='fwd') !Go!
+        br
+        br
+        button#right_back.btn.btn-warning.btn-lg.motor(type='button', side='right', dir='back') Back
 
   div
     div#slider
@@ -45,4 +57,17 @@ block content
           $.post("/pi/set_angle", { angle: ui.value });
         })
       });
+    go = function(side, dir) {
+        console.log(side);
+        console.log(dir);
+    };
+
+    stop = function (side) {
+        console.log("stopping " + side);
+    };
+
+    $(".motor")
+        .mousedown(function () { go($(this).attr("side"), $(this).attr("dir")); })
+        .mouseup(function () { stop($(this).attr("side")); })
+    ;
 

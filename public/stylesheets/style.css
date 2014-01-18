@@ -6,3 +6,6 @@ body {
 a {
   color: #00B7FF;
 }
+
+#main { height: 500px; width: 100%; vertical-align: top; }
+#main tr td { vertical-align: top; }

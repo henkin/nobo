@@ -20,15 +20,17 @@ left = new Motor(0, 6, 3, "left")
 
 right.drive();
 left.drive();
-sleep.sleep(3);
+sleep.sleep(2);
 left.stop();
 right.stop();
 
+sleep.sleep(1);
 right.reverse();
 left.reverse();
+
 right.drive();
 left.drive();
-sleep.sleep(3);
+sleep.sleep(2);
 
 left.stop();
 right.stop();
