@@ -3,6 +3,18 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  
+  //form#set_angle(method="post", action="/pi/set_angle")
+  //  input#angle_text(type="text", name="angle")
+  //  input(type="submit", value="set")
+  //video(controls='controls', width='1280', height='720', autoplay='autoplay')
+    //source(src='index.m3u8', type='application/x-mpegURL')
+
+  div
+    div#slider
+    div#status
+  ul#distance
+
   script.
     var socket = io.connect('http://henkin.us:3000');
     socket.on('distance', function (data) {
@@ -34,13 +46,3 @@ block content
         })
       });
 
-  
-  //form#set_angle(method="post", action="/pi/set_angle")
-  //  input#angle_text(type="text", name="angle")
-  //  input(type="submit", value="set")
-  
-  div
-    div#slider
-    div#status
-      
-  ul#distance

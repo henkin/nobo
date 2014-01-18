@@ -1,7 +1,7 @@
 Motor = new require("../pi/motor")
+sleep = require('sleep');
 
 test = (motor) ->
-	sleep = require('sleep');
 	motor.drive();
 	sleep.sleep(1);
 	motor.stop();
@@ -11,10 +11,27 @@ test = (motor) ->
 	sleep.sleep(1);
 	motor.stop();
 
-m = new Motor(2, 8, 9)
-test(m)
+right = new Motor(2, 8, 9, "right")
+#test(right)
 
 
-m = new Motor(0, 6, 3)
-test(m)
+left = new Motor(0, 6, 3, "left")
+#test(left)
+
+right.drive();
+left.drive();
+sleep.sleep(3);
+left.stop();
+right.stop();
+
+right.reverse();
+left.reverse();
+right.drive();
+left.drive();
+sleep.sleep(3);
+
+left.stop();
+right.stop();
+
+
 

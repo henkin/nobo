@@ -15,8 +15,10 @@ class Ranger
 	get_distance: () =>
 		# @sonar.get_distance()
 		distance = 0
-		while distance <= 0
+		tries = 3
+		while distance <= 0 and tries > 0
 			distance = @sonar.get_distance()
+			tries--
 		return distance
 
 	get_distance_at_angle: (angle, fn) =>
