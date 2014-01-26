@@ -17,7 +17,7 @@
         <td>
           <button id="left_go" type="button" side="left" dir="fwd" class="btn btn-success btn-lg motor">!Go!</button><br><br>
           <button id="left_back" type="button" side="left" dir="back" class="btn btn-warning btn-lg motor">Back</button></td>
-        <td>[VIDEO FEED]</td>
+        <td><img id="pic" src="pic.jpg" width="640" height="480"></td>
         <td>
           <button id="right_go" type="button" side="right" dir="fwd" class="btn btn-success btn-lg motor">!Go!</button><br><br>
           <button id="right_back" type="button" side="right" dir="back" class="btn btn-warning btn-lg motor">Back</button></td>
@@ -41,15 +41,13 @@ var socket = io.connect('http://henkin.us:3000');
             $("#status").html("angle set to " + data);
         });
 
-        $(document).ready(function () {
+        $(function () {
 
             $("#set_angle").on("submit", function (event) {
                 event.preventDefault();
                 $.post(this.action, $(this).serialize());
             });
 
-        });
-        $(function () {
             $("#slider").slider({
                 min: -75,
                 max: 75
@@ -57,7 +55,12 @@ var socket = io.connect('http://henkin.us:3000');
             .on("slidechange", function (event, ui) {
                 //console.log(ui.value);
                 $.post("/pi/set_angle", { angle: ui.value });
-            })
+            });
+
+            setInterval(function(){
+              $("#pic").attr("src", "/pic.jpg?"+new Date().getTime());
+            },200);
+
         });
         go = function (side, dir) {
             console.log(side);
@@ -67,6 +70,7 @@ var socket = io.connect('http://henkin.us:3000');
         stop = function (side) {
             console.log("stopping " + side);
         };
+
 
         $(".motor")
             .mousedown(function () { go($(this).attr("side"), $(this).attr("dir")); })
