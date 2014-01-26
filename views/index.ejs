@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Express</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <h1>nobo 0.1</h1>
+  <table id="main">
+     <tr>
+        <td>
+          <button id="left_go" type="button" side="left" dir="fwd" class="btn btn-success btn-lg motor">!Go!</button><br><br>
+          <button id="left_back" type="button" side="left" dir="back" class="btn btn-warning btn-lg motor">Back</button></td>
+        <td>[VIDEO FEED]</td>
+        <td>
+          <button id="right_go" type="button" side="right" dir="fwd" class="btn btn-success btn-lg motor">!Go!</button><br><br>
+          <button id="right_back" type="button" side="right" dir="back" class="btn btn-warning btn-lg motor">Back</button></td>
+     </tr>
+  </table>
+  <div>
+     <div id="slider"></div>
+     <div id="status"></div>
+  </div>
+  <ul id="distance"></ul>
+
+      <script>
+var socket = io.connect('http://henkin.us:3000');
+        socket.on('distance', function (data) {
+            //console.log(data);
+            $("#distance").prepend($("<li/>").html(data));
+        });
+
+        socket.on('angle_set', function (data) {
+            console.log(data);
+            $("#status").html("angle set to " + data);
+        });
+
+        $(document).ready(function () {
+
+            $("#set_angle").on("submit", function (event) {
+                event.preventDefault();
+                $.post(this.action, $(this).serialize());
+            });
+
+        });
+        $(function () {
+            $("#slider").slider({
+                min: -75,
+                max: 75
+            })
+            .on("slidechange", function (event, ui) {
+                //console.log(ui.value);
+                $.post("/pi/set_angle", { angle: ui.value });
+            })
+        });
+        go = function (side, dir) {
+            console.log(side);
+            console.log(dir);
+        };
+
+        stop = function (side) {
+            console.log("stopping " + side);
+        };
+
+        $(".motor")
+            .mousedown(function () { go($(this).attr("side"), $(this).attr("dir")); })
+            .mouseup(function () { stop($(this).attr("side")); })
+        ;
+    </script>
+</body>
+</html>
