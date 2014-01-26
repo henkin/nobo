@@ -15,12 +15,12 @@
   <table id="main">
      <tr>
         <td>
-          <button id="left_go" type="button" side="left" dir="fwd" class="btn btn-success btn-lg motor">!Go!</button><br><br>
-          <button id="left_back" type="button" side="left" dir="back" class="btn btn-warning btn-lg motor">Back</button></td>
+          <button id="left_go" type="button" side="left" dir="forward" class="btn btn-success btn-lg motor">!Go!</button><br><br>
+          <button id="left_back" type="button" side="left" dir="reverse" class="btn btn-warning btn-lg motor">Back</button></td>
         <td><img id="pic" src="pic.jpg" width="640" height="480"></td>
         <td>
-          <button id="right_go" type="button" side="right" dir="fwd" class="btn btn-success btn-lg motor">!Go!</button><br><br>
-          <button id="right_back" type="button" side="right" dir="back" class="btn btn-warning btn-lg motor">Back</button></td>
+          <button id="right_go" type="button" side="right" dir="forward" class="btn btn-success btn-lg motor">!Go!</button><br><br>
+          <button id="right_back" type="button" side="right" dir="reverse" class="btn btn-warning btn-lg motor">Back</button></td>
      </tr>
   </table>
   <div>
@@ -62,13 +62,16 @@ var socket = io.connect('http://henkin.us:3000');
             },200);
 
         });
+
         go = function (side, dir) {
             console.log(side);
             console.log(dir);
+            socket.emit('drive', { side: side, dir: dir })
         };
 
         stop = function (side) {
-            console.log("stopping " + side);
+            console.log("stopping " + side)
+            socket.emit('stop', side)
         };
 
 

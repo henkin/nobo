@@ -18,22 +18,12 @@ right = new Motor(2, 8, 9, "right")
 left = new Motor(0, 6, 3, "left")
 #test(left)
 
-right.drive();
-left.drive();
-sleep.sleep(2);
-left.stop();
-right.stop();
+right.drive(30);
+left.drive(30);
 
-sleep.sleep(1);
-right.reverse();
-left.reverse();
-
-right.drive();
-left.drive();
-sleep.sleep(2);
-
-left.stop();
-right.stop();
-
+setTimeout ->
+	right.stop()
+	left.stop()
+, 2000
 
 
