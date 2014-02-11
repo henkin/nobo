@@ -4,6 +4,7 @@ class Motor
 	
 	constructor: (@enable, @in1, @in2, @name) ->
 		@drive_cycle = 30
+		@driving = false
 		wpi.setup()
 		wpi.pinMode(@enable, wpi.modes.OUTPUT)
 		wpi.pinMode(@in1, wpi.modes.OUTPUT)
@@ -21,6 +22,8 @@ class Motor
 		wpi.digitalWrite(@in2, 1);
 
 	drive: (percent = 100) =>
+		if @driving then @stop()
+		@driving = true
 		@timer = setInterval => 
     	@drive_pulse percent
     , @drive_cycle
@@ -37,5 +40,6 @@ class Motor
 	stop: () =>
 		clearInterval(@timer)
 		wpi.digitalWrite(@enable, 0);
+		@driving = false
 
 module.exports = Motor

@@ -1,1 +1,1 @@
-sudo coffee app.coffee
+sudo coffee /home/pi/nobo/app.coffee

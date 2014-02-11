@@ -9,9 +9,13 @@
     <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <style type="text/css">
+      .motor { width: 100px;}
+    </style>
 </head>
 <body>
   <h1>nobo 0.1</h1>
+  <div id="status"></div>
   <table id="main">
      <tr>
         <td>
@@ -25,12 +29,12 @@
   </table>
   <div>
      <div id="slider"></div>
-     <div id="status"></div>
+     
   </div>
   <ul id="distance"></ul>
 
       <script>
-var socket = io.connect('http://henkin.us:3000');
+        var socket = io.connect();
         socket.on('distance', function (data) {
             //console.log(data);
             $("#distance").prepend($("<li/>").html(data));
@@ -59,26 +63,30 @@ var socket = io.connect('http://henkin.us:3000');
 
             setInterval(function(){
               $("#pic").attr("src", "/pic.jpg?"+new Date().getTime());
-            },200);
+            },500);
 
         });
 
         go = function (side, dir) {
             console.log(side);
             console.log(dir);
+            $("#status").html('start');
             socket.emit('drive', { side: side, dir: dir })
         };
 
         stop = function (side) {
             console.log("stopping " + side)
             socket.emit('stop', side)
+            $("#status").html('stop');
         };
 
 
         $(".motor")
-            .mousedown(function () { go($(this).attr("side"), $(this).attr("dir")); })
-            .mouseup(function () { stop($(this).attr("side")); })
-        ;
+          .on({ 'touchstart mousedown' : function() { go($(this).attr("side"), $(this).attr("dir")) } })
+          .on({ 'touchend mouseup mouseout' : function() { stop($(this).attr("side")) } })
+          //  .mousedown(function () { go($(this).attr("side"), $(this).attr("dir")); })
+           // .mouseup(function () { stop($(this).attr("side")); })
+        
     </script>
 </body>
 </html>

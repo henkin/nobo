@@ -38,7 +38,7 @@ class Pi
 
   emit_distance: (socket) =>
     distance = @ranger.get_distance()
-    socket.emit 'distance', distance
+    #socket.emit 'distance', distance
 
   drive: (data) =>
     motor = @[data.side]
@@ -46,7 +46,7 @@ class Pi
     #@right.drive(30);
     #@left.drive(30);
     motor[data.dir]()
-    motor.drive(20)
+    motor.drive(20) unless motor.driving
     
     #setTimeout =>
       #@right.stop()
